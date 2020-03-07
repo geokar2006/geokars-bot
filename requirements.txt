@@ -5,6 +5,5 @@ six==1.13.0
 soupsieve==1.9.5
 pymorphy2
 pymorphy2-dicts-ru
-pyTelegramBotAPI==3.6.7
-telebot==0.0.3
+pyTelegramBotAPI
 requests==2.23.0
