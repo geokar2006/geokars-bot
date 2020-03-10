@@ -1,9 +1,4 @@
-
-
-
-six==1.13.0
-
 pymorphy2
 pymorphy2-dicts-ru
+telebot
 pyTelegramBotAPI
-requests==2.7.0
