@@ -4,8 +4,10 @@ import config
 import random
 from telebot import types
 bot = telebot.TeleBot(config.TOKEN)
-gen = 'Сгенерировал'
+gen = 'Сгенерировал(а)'
+kv = 'Квас начал(а)'
 tb = telebot.TeleBot(config.TOKEN)
+print('Бот запущен')
 @bot.message_handler(commands=['start', 'restart'])
 def welcome(message):
 	# keyboard
@@ -35,6 +37,9 @@ def lalala(message):
 
 			bot.send_message(message.chat.id, 'Отлично, сам как?', reply_markup=markup)
 		elif message.text == 'Квас':
+			bot.send_message(message.chat.id, 'Зря')      
+			mem = message.from_user.first_name
+			print(kv, mem)
 			but = pymorphy2.MorphAnalyzer().parse('бутылка')[0]
 			i = 99
 			while i:
@@ -63,17 +68,17 @@ def callback_inline(call):
     try:
         if call.message:
             if call.data == 'good':
-                bot.send_message(call.message.chat.id, 'Вот и отличненько 😊')
+              bot.send_message(call.message.chat.id,   'Вот и отличненько')
             elif call.data == 'bad':
-                bot.send_message(call.message.chat.id, 'Бывает 😢')
+              bot.send_message(call.message.chat.id, 'Бывает')
 
             # remove inline buttons
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text="😊 Как дела?",
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text="Как дела?",
                 reply_markup=None)
 
             # show alert
             bot.answer_callback_query(callback_query_id=call.id, show_alert=False,
-                text="ЭТО")
+                text="ОК")
 
     except Exception as e:
         print(repr(e))
