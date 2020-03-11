@@ -61,8 +61,8 @@ def lalala(message):
 			if a == 'Y':
 			    b = input('Сообщение:')
 			    id = input('id:')
-			    bot.send_message(message.chat.id, 'Админ ответил вам: ' + b)
-
+			    bot.send_message(message.chat.id, 'Админ ответил вам:')			    
+			    bot.send_message(message.chat.id, f'{b} ' )
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
     try:
