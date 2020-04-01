@@ -6,8 +6,33 @@ from telebot import types
 bot = telebot.TeleBot(config.TOKEN)
 gen = 'Сгенерировал(а)'
 kv = 'Квас начал(а)'
+uv = 1
 tb = telebot.TeleBot(config.TOKEN)
 print('Бот запущен')
+print('Для запуска админ панели напишите "R".')
+while kv == kv:
+	adm = input()
+	if adm == 'R':
+		print('H==Помощь')
+	elif adm == "H":
+		print('S_OFF: отключить все уведомления')
+		print('S_ON: включить все уведомления')
+		print('OTV: ответить человеку')	
+	elif adm == "S_OFF":
+		uv = 0
+		print('Умедомления отключены')	
+	elif adm == "S_ON":
+		uv = 1
+		print('Умедомления включены')
+	elif adm == 'OTV':
+		b = input('Сообщение:')
+		id1 = input('id:')
+		@bot.message_handler(content_types=[])
+		def OTV(message):
+			id = id1
+			bot.send_message(message.chat.id, 'Админ написал вам:')			    
+			bot.send_message(message.chat.id, f'{b} ' )
+
 @bot.message_handler(commands=['start', 'restart'])
 def welcome(message):
 	# keyboard
@@ -25,8 +50,9 @@ def lalala(message):
 	if message.chat.type == 'private':
 		if message.text == 'Рандомное число':
 		   bot.send_message(message.chat.id, str(random.randint(0,9999999)))
-		   mem = message.from_user.first_name
-		   print(gen, mem)
+		   if uv == 1:      
+				mem = message.from_user.first_name
+				print(gen, mem)
 		elif message.text == 'Как дела?':
 
 			markup = types.InlineKeyboardMarkup(row_width=2)
@@ -37,9 +63,10 @@ def lalala(message):
 
 			bot.send_message(message.chat.id, 'Отлично, сам как?', reply_markup=markup)
 		elif message.text == 'Квас':
-			bot.send_message(message.chat.id, 'Зря')      
-			mem = message.from_user.first_name
-			print(kv, mem)
+			bot.send_message(message.chat.id, 'Зря')
+			if uv == 1:      
+				mem = message.from_user.first_name
+				print(kv, mem)
 			but = pymorphy2.MorphAnalyzer().parse('бутылка')[0]
 			i = 99
 			while i:
@@ -53,16 +80,10 @@ def lalala(message):
 			bot.send_message(message.chat.id, 'Было много кваса)')
 		else:
 			bot.send_message(message.chat.id, 'Харе спамить, я это не знаю.')
-			name = message.from_user.first_name
-			id = message.chat.id
-			print('Текст от ' + name + ' ' + str(id) + ': ' + message.text)
-			print('Ответить?(Y)')
-			a = input()
-			if a == 'Y':
-			    b = input('Сообщение:')
-			    id = input('id:')
-			    bot.send_message(message.chat.id, 'Админ ответил вам:')			    
-			    bot.send_message(message.chat.id, f'{b} ' )
+			if uv == 1:
+				name = message.from_user.first_name
+				id = message.chat.id
+				print('Текст от ' + name + ' ' + str(id) + ': ' + message.text)
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
     try:
