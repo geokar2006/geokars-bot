@@ -2,19 +2,19 @@ import telebot
 import pymorphy2
 import config
 import random
+from threading import Thread
 from telebot import types
-from admin import admin
 
 bot = telebot.TeleBot(config.TOKEN)
 gen = 'Сгенерировал(а)'
 kv = 'Квас начал(а)'
 uv = 1
+t1 = Thread(target=panel)
 tb = telebot.TeleBot(config.TOKEN)
 print('Бот запущен')
-print('Для запуска админ панели напишите "R".')
-adm = input()
-if adm == 'R':
-    admin.panel('')
+print('Вас преведствует админ панель.')
+t1.start()
+    
 
 
 @bot.message_handler(commands=['start', 'restart'])
@@ -43,10 +43,6 @@ def lalala(message):
                 mem = message.from_user.first_name
                 id = message.chat.id
                 print(gen, mem, id)
-                print('Запустить админ панель?(Y)')
-                adm = input()
-                if adm == 'Y':
-                    admin.panel('')
         elif message.text == 'Как дела?':
 
             markup = types.InlineKeyboardMarkup(row_width=2)
@@ -62,10 +58,6 @@ def lalala(message):
                 mem = message.from_user.first_name
                 id = message.chat.id
                 print(kv, mem, id)
-                print('Запустить админ панель?(Y)')
-                adm = input()
-                if adm == 'Y':
-                    admin.panel('')
             but = pymorphy2.MorphAnalyzer().parse('бутылка')[0]
             i = 99
             while i:
@@ -84,13 +76,6 @@ def lalala(message):
                 name = message.from_user.first_name
                 id = message.chat.id
                 print('Текст от ' + name + ' ' + str(id) + ': ' + message.text)
-                print('Запустить админ панель?(Y)')
-                adm = input()
-                if adm == 'Y':
-                    admin.panel('')
-    if adm == 'R' or adm == 'Y':
-        admin.panel('')
-
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
@@ -112,6 +97,30 @@ def callback_inline(call):
     except Exception as e:
         print(repr(e))
 
+
+def panel:
+    print('H: Помощь')
+    kv = 0
+    while kv != 1:
+        adm = input()
+        if adm == "S_OFF":
+            uv = 0
+            print('Умедомления отключены')
+        elif adm == "S_ON":
+            uv = 1
+            print('Умедомления включены')
+        elif adm == 'OTV':
+            b = input('Сообщение:')
+            id1 = input('id:')
+            @bot.message_handler(content_types=[])
+            def OTV(message):
+                id = id1
+                bot.send_message(message.chat.id, 'Админ написал вам:')
+                bot.send_message(message.chat.id, f'{b} ')
+        elif adm == 'H':
+            print('S_OFF: отключить все уведомления')
+            print('S_ON: включить все уведомления')
+            print('OTV: ответить человеку')
 
 # RUN
 bot.polling(none_stop=True)
