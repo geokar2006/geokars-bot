@@ -8,7 +8,7 @@ from time import sleep
 gen = 'Сгенерировал(а)'
 kv = 'Квас начал(а)'
 print('Бот запущен')
-print('Вас преведствует админ панель.')
+print('Вас приветствует админ-панель.')
 OTV = False
 mes = 0
 otv = ''
@@ -26,12 +26,12 @@ def mainbot():
         # keyboard
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         item3 = types.KeyboardButton("Квас")
-        item1 = types.KeyboardButton("Рандомное число")
+        item1 = types.KeyboardButton("Случайное число")
         item2 = types.KeyboardButton("Как дела?")
         markup.add(item1, item2, item3)
 
         bot.send_message(message.chat.id,
-                         "Добро пожаловать, {0.first_name}!\nЯ - <b>{1.first_name}</b>, бот созданный чтобы быть лохом и вашим рабом.".format(
+                         "Добро пожаловать, {0.first_name}!\nЯ - <b>{1.first_name}</b>, бот, созданный, чтобы быть.".format(
                              message.from_user, bot.get_me()),
                          parse_mode='html', reply_markup=markup)
     @bot.message_handler(commands=['admin'])
@@ -44,15 +44,15 @@ def mainbot():
           item4 = types.InlineKeyboardButton("Выход", callback_data='exit')
           item3 = types.InlineKeyboardButton("Ответить человеку", callback_data='OTV')
           item1 = types.InlineKeyboardButton("Все сообщения", callback_data='soobx')
-          item2 = types.InlineKeyboardButton("Очистить сообшения", callback_data='minsoobx')
+          item2 = types.InlineKeyboardButton("Удалить сообшения", callback_data='minsoobx')
           item5 = types.InlineKeyboardButton("Выключить уведомления", callback_data='S_OFF')
           item6 = types.InlineKeyboardButton("Включить уведомления", callback_data='S_ON')
           markup1.add(item1, item2, item3, item5, item6, item4)
-          bot.send_message(message.chat.id, f'Добро пожаловать в админ панель, {mem}!', reply_markup=markup1)
+          bot.send_message(message.chat.id, f'Добро пожаловать в админ-панель, {mem}!', reply_markup=markup1)
           id = message.chat.id
           if uv == 1:
-            soob.append(f'{mem}, {id} зашёл в админ панель.')
-            print(f'{mem}, {id} зашёл в админ панель.')
+            soob.append(f'{mem}, {id} зашёл в админ-панель.')
+            print(f'{mem}, {id} зашёл в админ-панель.')
           admin = 1
         else:
           mem = message.from_user.first_name
@@ -76,10 +76,10 @@ def mainbot():
         if message.chat.type == 'private':
           if calll == 1:
             otv = message.text
-            msg = bot.reply_to(message, "Ведите ID")
+            msg = bot.reply_to(message, "Введите ID")
             bot.register_next_step_handler(msg, adminkatext)
           else:
-            if message.text == 'Рандомное число':
+            if message.text == 'Случайное число':
                 bot.send_message(message.chat.id, str(random.randint(0, 9999999)))
                 if uv == 1:
                     mem = message.from_user.first_name
@@ -145,14 +145,14 @@ def mainbot():
                 elif call.data == 'minsoobx':
                     soob = []
                     id = call.message.chat.id
-                    telebot.TeleBot.send_message(bot, id, 'Сообщения очищены.')
+                    telebot.TeleBot.send_message(bot, id, 'Сообщения удалены.')
                 elif call.data == 'exit':
                     id = call.message.chat.id
                     mem = call.from_user.first_name
                     bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=f"До свидания, {mem}!", reply_markup=None)
                     if uv == 1:
-                      soob.append(f'{mem}, {id} вышел из админ панели.')
-                      print(f'{mem}, {id} вышел из админ панели.')
+                      soob.append(f'{mem}, {id} вышел из админ-панели.')
+                      print(f'{mem}, {id} вышел из админ-панели.')
                     admin = 0
                 elif call.data == 'OTV':
                   bot.send_message(call.message.chat.id, 'Напишите сообщение:')
