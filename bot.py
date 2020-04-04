@@ -13,9 +13,12 @@ OTV = False
 mes = 0
 otv = ''
 calll = 0
+Adm = 0
+udal = 2
 uv = 1
 admin = 0
 soob = []
+admins = [663414562]
 bot = telebot.TeleBot(config.TOKEN)
 def mainbot():
     global OTV
@@ -38,7 +41,8 @@ def mainbot():
     def inbotpanel(message):
         global soob
         global admin
-        if message.chat.id == 663414562:
+        global admins
+        if message.chat.id in admins:
           mem = message.from_user.first_name
           markup1 = types.InlineKeyboardMarkup(row_width=2)
           item4 = types.InlineKeyboardButton("Выход", callback_data='exit')
@@ -47,7 +51,9 @@ def mainbot():
           item2 = types.InlineKeyboardButton("Удалить сообшения", callback_data='minsoobx')
           item5 = types.InlineKeyboardButton("Выключить уведомления", callback_data='S_OFF')
           item6 = types.InlineKeyboardButton("Включить уведомления", callback_data='S_ON')
-          markup1.add(item1, item2, item3, item5, item6, item4)
+          item7 = types.InlineKeyboardButton("Удалить админа", callback_data='MDA')
+          item8 = types.InlineKeyboardButton("Добавить админа", callback_data='DA')
+          markup1.add(item1, item2, item3, item5, item6, item7, item8, item4)
           bot.send_message(message.chat.id, f'Добро пожаловать в админ-панель, {mem}!', reply_markup=markup1)
           id = message.chat.id
           if uv == 1:
@@ -61,23 +67,35 @@ def mainbot():
     def adminkatext(message):
       global otv
       global calll
-      if calll == 1:
+      global admin
+      if calll == 1 and message.chat.id in admins:
         id1 = message.text
         telebot.TeleBot.send_message(bot, int(id1), "Админ написал вам:")
         telebot.TeleBot.send_message(bot, int(id1), otv)
         calll = 0
-
-
-
+        admin = 0
     @bot.message_handler(content_types=['text'])
     def lalala(message):
         global otv
         global soob
+        global Adm
+        global admins
+        global udal
         if message.chat.type == 'private':
-          if calll == 1:
+          if calll == 1 and message.chat.id in admins:
             otv = message.text
             msg = bot.reply_to(message, "Введите ID")
             bot.register_next_step_handler(msg, adminkatext)
+          if Adm == 1 and message.chat.id in admins:
+            id1 = message.text
+            if udal == 1:
+              admins.remove(int(id1))
+               bot.send_message(message.chat.id, f'{id1} удалён(а) из админов.')
+              udal = 2
+            elif udal == 0:
+              admins.append(int(id1))
+              bot.send_message(message.chat.id, f'{id1} добавлен(а) к админам.')
+              udal = 2
           else:
             if message.text == 'Случайное число':
                 bot.send_message(message.chat.id, str(random.randint(0, 9999999)))
@@ -129,10 +147,13 @@ def mainbot():
         global admin
         global soob
         global calll
+        global admins
+        global Adm
         global uv
+        global udal
         try:
             if call.message:
-              if admin == 1:
+              if admin == 1 and call.message.chat.id in admins:
                 if call.data == 'soobx':
                   if len(soob) == 0:
                     id = call.message.chat.id
@@ -157,6 +178,14 @@ def mainbot():
                 elif call.data == 'OTV':
                   bot.send_message(call.message.chat.id, 'Напишите сообщение:')
                   calll = 1
+                elif call.data == 'DA':
+                  bot.send_message(call.message.chat.id, 'Id человека:')
+                  Adm = 1
+                  udal = 0
+                elif call.data == 'MDA':
+                  bot.send_message(call.message.chat.id, 'Id человека:')
+                  Adm = 1
+                  udal = 1
                 elif call.data == 'S_OFF':
                   bot.send_message(call.message.chat.id, 'Уведомления выключены')
                   uv = 0
@@ -202,10 +231,18 @@ def panel():
           b = input('Сообщение:')
           telebot.TeleBot.send_message(bot, ch, "Админ написал вам:")
           telebot.TeleBot.send_message(bot, ch, b)
+        elif adm == 'DA':
+          admins.append(int(input('Id человека:')))
+          print('Успешно добавлен(а)')
+        elif adm == 'MDA':
+          admins.remove(int(input('Id человека:')))
+          print('Успешно удалён(а)')
         elif adm == 'H':
             print('S_OFF: отключить все уведомления')
             print('S_ON: включить все уведомления')
             print('OTV: ответить человеку')
+            print('DA: Добавить админа до перезагрузки бота')
+            print('MDA: Удалить админа')
 
 
 if __name__ == '__main__':
