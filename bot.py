@@ -96,7 +96,7 @@ def mainbot():
 
                 bot.send_message(message.chat.id, 'Отлично, сам как?', reply_markup=markup)
             elif message.text == 'Квас':
-                bot.send_message(message.chat.id, 'Так как квас крашит бота из-за коровавируса (COROV-19), rвас был замедлен.')
+                bot.send_message(message.chat.id, 'Так как квас крашит бота из-за коровавируса (COROV-19), квас был замедлен.')
                 
                 if uv == 1:
                     mem = message.from_user.first_name
